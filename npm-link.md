@@ -3,7 +3,12 @@ If your webapp relies on a dependency library (such as `@mlg/ui`) for production
 without pushing to git/npm after each change, you want to `npm link` them. Once linked, the linked project will reflect its updates
 immediately in the source's node_modules.
 
-* Note: for the purposes of this note, I will refer to our example dep library as `mlg/ui` and our source project as `webapp`
+* Note: for the purposes of this note, I will refer to our example `dep`endcy `lib`rary as `@mlg/ui` and our source project as `webapp`.
+
+`app` = `webapp`
+
+`lib` = `dep` = `@mlg/ui`
+
 
 * Pre-Link: For the duration of a development iteration, remove the dev library from `package.json -> dependencies` and from the `webapp/node_modules`. 
 
@@ -32,6 +37,9 @@ more specific information: https://reactjs.org/docs/error-boundaries.html. Run a
 
 1. Duplicate versions of React. See here: https://reactjs.org/warnings/invalid-hook-call-warning.html under `Duplicate React`. Also
 se https://github.com/facebook/react/issues/13991
+
+- in short, you want to link your `app`'s version of `react` to your `lib` so your `lib` is using the same `react` as your `app`.
+Something like `npm link /absolute/path/to/webapp/node_modules/react` inside your `lib` module.
 
 - try adding ```  resolve: {
                     alias: {
