@@ -1,7 +1,7 @@
 #### Developing with `npm-link`
 If your webapp relies on a dependency library (such as `@mlg/ui`) for production, but you want to develop them side by side
-without pushing to git/npm after each change, you want to npm-link` them. Once linked, the linked project will reflect its updates
-immediately in the source project.
+without pushing to git/npm after each change, you want to `npm link` them. Once linked, the linked project will reflect its updates
+immediately in the source's node_modules.
 
 * Note: for the purposes of this note, I will refer to our example dep library as `mlg/ui` and our source project as `webapp`
 
