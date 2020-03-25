@@ -46,6 +46,15 @@ Something like `npm link /absolute/path/to/webapp/node_modules/react` inside you
                       react: path.resolve('./node_modules/react')
                     }
                   }``` to your webpack config
+                  
+- or adding resolutions in your `package.json`. It's important here to note that this forces react to be the same version across
+ dependencies. Beware if any of your deps need a specific dependency.
+```  
+"resolutions": {
+   "**/react": "16.7.0-alpha.2",
+   "**/react-dom": "16.7.0-alpha.2"
+ },
+```
 
  
 
