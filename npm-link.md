@@ -10,6 +10,7 @@ immediately in the source project.
 > `npm-link` should override any dependency already published
 
 2. Go into `@mlg-ui` and run `npm-link`. A log should appear of the path where your module was linked to. `npm link` installs the package as a symbolic link in the system's global package location.
+ Also add a watch script so that babel will compile on every change. Something like: `npx babel script.js --watch --out-file script-compiled.js`
 
 3. Go into `webapp` and run `npm-link @mlg/ui`. This won't add `@mlg/ui` to your dependency list but will add it 
 to your `webapp/node_modules` where now any changes made to `@mlg/ui` will be automatically reflected in 
@@ -23,6 +24,22 @@ is **NOT THE SAME** as `npm install`. You can alternatively remove `@mlg/ui` fro
 > **NOTE**: Your `dep` package will still be symlinked to your global folder. To remove the link globally run `npm unlink --global @mlg/ui`
 
 > **NOTE**: `npm unlink` does not reinstall the original package that you overrid with the symlink. Make sure to `npm i @mlg/ui` again after you unlinked.  
+ 
+#### Immediate Issues
+If `webapp` crashes after linking the `dep` module, first make sure your app is wrapped in an ErrorBoundary so we can get
+more specific information: https://reactjs.org/docs/error-boundaries.html. Run a `console.error` in `componentDidCatch`.
+
+1. Duplicate versions of React. See here: https://reactjs.org/warnings/invalid-hook-call-warning.html under `Duplicate React`. Also
+se https://github.com/facebook/react/issues/13991
+
+- try adding ```  resolve: {
+                    alias: {
+                      react: path.resolve('./node_modules/react')
+                    }
+                  }``` to your webpack config
+
+ 
+
   
 #### Resource links
 * https://stackoverflow.com/questions/44515865/package-that-is-linked-with-npm-link-doesnt-update
