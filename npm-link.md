@@ -23,7 +23,8 @@ is **NOT THE SAME** as `npm install`. You can alternatively remove `@mlg/ui` fro
 
 > **NOTE**: Your `dep` package will still be symlinked to your global folder. To remove the link globally run `npm unlink --global @mlg/ui`
 
-> **NOTE**: `npm unlink` does not reinstall the original package that you overrid with the symlink. Make sure to `npm i @mlg/ui` again after you unlinked.  
+> **NOTE**: `npm unlink` does not reinstall the original package that you overrid with the symlink. Make sure to `npm i @mlg/ui` again after you unlinked. Also, 
+>`npm unlink` does not seem to remove the module from your node_modules, only your dependencies. Check to make sure.  
  
 #### Immediate Issues
 If `webapp` crashes after linking the `dep` module, first make sure your app is wrapped in an ErrorBoundary so we can get
