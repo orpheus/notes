@@ -1,0 +1,91 @@
+#### Developing with `npm-link`
+If your webapp relies on a dependency library (such as `@mlg/ui`) for production, but you want to develop them side by side
+without pushing to git/npm after each change, you want to npm-link` them. Once linked, the linked project will reflect its updates
+immediately in the source project.
+
+* Note: for the purposes of this note, I will refer to our example dep library as `mlg/ui` and our source project as `webapp`
+
+* Pre-Link: For the duration of a development iteration, remove the dev library from `package.json -> dependencies` and from the `webapp/node_modules`. 
+
+> `npm-link` should override any dependency already published
+
+2. Go into `@mlg-ui` and run `npm-link`. A log should appear of the path where your module was linked to. `npm link` installs the package as a symbolic link in the system's global package location.
+
+3. Go into `webapp` and run `npm-link @mlg/ui`. This won't add `@mlg/ui` to your dependency list but will add it 
+to your `webapp/node_modules` where now any changes made to `@mlg/ui` will be automatically reflected in 
+`webapp/node_modules`.
+
+3. When you are done with your iteration of development you need to unlink the `dep` package from the webapp. You can do this 
+by running `npm unlink @mlg/ui` inside the webapp. 
+> **NOTE**: `npm unlink` is an alias for `npm uninstall` whereas `npm link`
+is **NOT THE SAME** as `npm install`. You can alternatively remove `@mlg/ui` from your `webapp/node_modules` manually.
+
+> **NOTE**: Your `dep` package will still be symlinked to your global folder. To remove the link globally run `npm unlink --global @mlg/ui`
+
+> **NOTE**: `npm unlink` does not reinstall the original package that you overrid with the symlink. Make sure to `npm i @mlg/ui` again after you unlinked.  
+  
+#### Resource links
+* https://stackoverflow.com/questions/44515865/package-that-is-linked-with-npm-link-doesnt-update
+* https://stackoverflow.com/questions/19094630/how-do-i-uninstall-a-package-installed-using-npm-link
+* https://medium.com/dailyjs/how-to-use-npm-link-7375b6219557
+* https://github.com/npm/npm/issues/6248
+* https://docs.npmjs.com/cli/link.html
+
+#### `npm help link`
+```bash
+> npm link
+         alias: npm ln
+
+   Description
+       Package linking is a two-step process.
+
+       First,  npm  link  in  a  package  folder  will  create  a symlink in the global folder {prefix}/lib/node_mod-
+       ules/<package> that links to the package where the npm link command was executed. (see  npm-config  npm-config
+       for the value of prefix). It will also link any bins in the package to {prefix}/bin/{name}.
+
+       Next,  in some other location, npm link package-name will create a symbolic link from globally-installed pack-
+       age-name to node_modules/ of the current folder.
+
+       Note that package-name is taken from package.json, not from directory name.
+
+       The package name can be optionally prefixed with a scope. See npm help scope.  The scope must be  preceded  by
+       an @-symbol and followed by a slash.
+
+       When  creating  tarballs  for  npm  publish,  the  linked packages are "snapshotted" to their current state by
+       resolving the symbolic links.
+
+       This is handy for installing your own stuff, so that you can work on it and test it iteratively without having
+       to continually rebuild.
+
+       For example:
+
+             cd ~/projects/node-redis    # go into the package directory
+             npm link                    # creates global link
+             cd ~/projects/node-bloggy   # go into some other package directory.
+             npm link redis              # link-install the package
+
+       Now,   any   changes   to   ~/projects/node-redis   will   be  reflected  in  ~/projects/node-bloggy/node_mod-
+       ules/node-redis/. Note that the link should be to the package name, not the directory name for that package.
+
+       You may also shortcut the two steps in one.  For example, to do the above use-case in a shorter way:
+
+         cd ~/projects/node-bloggy  # go into the dir of your main project
+         npm link ../node-redis     # link the dir of your dependency
+
+       The second line is the equivalent of doing:
+
+         (cd ../node-redis; npm link)
+         npm link redis
+
+       That is, it first creates a global link, and then links the global installation  target  into  your  project's
+       node_modules folder.
+
+       Note  that  in  this  case,  you are referring to the directory name, node-redis, rather than the package name
+       redis.
+
+       If your linked package is scoped (see npm help scope) your link command must include that scope, e.g.
+
+         npm link @myorg/privatepackage
+
+
+```
