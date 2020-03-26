@@ -39,25 +39,36 @@ more specific information: https://reactjs.org/docs/error-boundaries.html. Run a
 se https://github.com/facebook/react/issues/13991
 
 - in short, you want to link your `app`'s version of `react` to your `lib` so your `lib` is using the same `react` as your `app`.
-Something like `npm link /absolute/path/to/webapp/node_modules/react` inside your `lib` module.
+Something like `npm link /absolute/path/to/webapp/node_modules/react` inside your `lib` module. 
 
-- try adding ```  resolve: {
-                    alias: {
-                      react: path.resolve('./node_modules/react')
-                    }
-                  }``` to your webpack config
+But you most likely only need to do this. What happens is that when you link your lib to your app, the app's webpack is going to 
+use the `node_modules` from that library's directory. Note that when you publish a module you don't publish the `node_modules` 
+so there's no chance of webpack resolving from a different instance of a library. By adding the bottom lines to your webpack config,
+you can (do either or both), alias a package name if you decided to put your `lib` inside of your `app` or if you symlinked, (in both
+cases you have to do this), you have to have webpack resolve your `app`s node_modules as an override preference to any other node_modules 
+
+- try adding 
+```  
+  resolve: {
+    alias: {
+        // only needed if your library is a git-module inside your app  
+        '@mlg/ui': path.resolve('./src/libmods/mlg-ui/web')
+    },
+    // https://webpack.js.org/configuration/resolve/#resolvemodules
+    modules: [path.resolve('node_modules'), 'node_modules']
+  }
+``` 
+to your webpack config
                   
 - or adding resolutions in your `package.json`. It's important here to note that this forces react to be the same version across
  dependencies. Beware if any of your deps need a specific dependency.
+ 
 ```  
 "resolutions": {
    "**/react": "16.7.0-alpha.2",
    "**/react-dom": "16.7.0-alpha.2"
  },
 ```
-
- 
-
   
 #### Resource links
 * https://stackoverflow.com/questions/44515865/package-that-is-linked-with-npm-link-doesnt-update
@@ -65,6 +76,8 @@ Something like `npm link /absolute/path/to/webapp/node_modules/react` inside you
 * https://medium.com/dailyjs/how-to-use-npm-link-7375b6219557
 * https://github.com/npm/npm/issues/6248
 * https://docs.npmjs.com/cli/link.html
+* https://github.com/facebook/create-react-app/issues/6027
+* https://webpack.js.org/configuration/resolve/#resolvemodules
 
 #### `npm help link`
 ```bash
