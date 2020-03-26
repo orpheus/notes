@@ -10,14 +10,12 @@ immediately in the source's node_modules.
 `lib` = `dep` = `@mlg/ui`
 
 
-* Pre-Link: For the duration of a development iteration, remove the dev library from `package.json -> dependencies` and from the `webapp/node_modules`. 
-
-> `npm-link` should override any dependency already published
-
-2. Go into `@mlg-ui` and run `npm-link`. A log should appear of the path where your module was linked to. `npm link` installs the package as a symbolic link in the system's global package location.
+1. Go into `@mlg-ui` and run `npm-link`. A log should appear of the path where your module was linked to. `npm link` installs the package as a symbolic link in the system's global package location.
  Also add a watch script so that babel will compile on every change. Something like: `npx babel script.js --watch --out-file script-compiled.js`
+ 
+ > `npm-link` should override any dependency already published
 
-3. Go into `webapp` and run `npm-link @mlg/ui`. This won't add `@mlg/ui` to your dependency list but will add it 
+2. Go into `webapp` and run `npm-link @mlg/ui`. This won't add `@mlg/ui` to your dependency list but will add it 
 to your `webapp/node_modules` where now any changes made to `@mlg/ui` will be automatically reflected in 
 `webapp/node_modules`.
 
