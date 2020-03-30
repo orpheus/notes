@@ -67,6 +67,16 @@ to your webpack config
    "**/react-dom": "16.7.0-alpha.2"
  },
 ```
+
+#### Common Errors and Fixes
+> ##### Errors: Node Version
+- Make sure the linked project is under the same version of node that you are using for your app. Also make sure the same node version is being used to watch and run your apps
+
+> ##### Errors: `exports is not defined`
+- if you run into this error, add `modules: 'commonjs` to your `babel` config. 
+
+> ##### ALIASING
+- alias out `react`, `react-dom`, and `react-redux` if `modules: [path.resolve('node_modules'), 'node_modules']` doesn't work
   
 #### Resource links
 * https://stackoverflow.com/questions/44515865/package-that-is-linked-with-npm-link-doesnt-update
