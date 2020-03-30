@@ -46,13 +46,18 @@ you can (do either or both), alias a package name if you decided to put your `li
 cases you have to do this), you have to have webpack resolve your `app`s node_modules as an override preference to any other node_modules 
 
 - try adding 
-```  
+``` javascript
   resolve: {
     alias: {
         // only needed if your library is a git-module inside your app  
         '@mlg/ui': path.resolve('./src/libmods/mlg-ui/web')
+        // if linking you'll most likely need
+        react: require.resolve('react'),
+        'react-dom': require.resolve('react-dom'),
+        'react-redux': require.resolve('react-redux')
     },
     // https://webpack.js.org/configuration/resolve/#resolvemodules
+    // this can potentially really confused your app, if this doesn't work, alias out react and friends above
     modules: [path.resolve('node_modules'), 'node_modules']
   }
 ``` 
@@ -73,7 +78,7 @@ to your webpack config
 - Make sure the linked project is under the same version of node that you are using for your app. Also make sure the same node version is being used to watch and run your apps
 
 > ##### Errors: `exports is not defined`
-- if you run into this error, add `modules: 'commonjs` to your `babel` config. 
+- if you run into this error, add `modules: 'commonjs` to your `babel` config options for @babel/preset-env. 
 
 > ##### ALIASING
 - alias out `react`, `react-dom`, and `react-redux` if `modules: [path.resolve('node_modules'), 'node_modules']` doesn't work
@@ -81,6 +86,10 @@ to your webpack config
 > #### UNINSTALLING OR INSTALLING ANY MODULES WILL DESTROY YOUR LINK
 - after you uninstall OR install any modules, it will destroy your link (removing most of its content) Make to to `re-link` after an `npm uninstall` of any kind
   
+> ### NODE_MODULE INSTALLATIONS AND RESOLVES
+- if after you linked, added resolvers and/or aliases, and there are still some `cannot resolve` errors, run an `npm install` both in the component library and the main 
+app one more time, to make sure all node_modules are refreshed (then remember to relink). Any failed to resolve errors after that may just be broken import paths 
+
 #### Resource links
 * https://stackoverflow.com/questions/44515865/package-that-is-linked-with-npm-link-doesnt-update
 * https://stackoverflow.com/questions/19094630/how-do-i-uninstall-a-package-installed-using-npm-link
