@@ -77,6 +77,9 @@ to your webpack config
 
 > ##### ALIASING
 - alias out `react`, `react-dom`, and `react-redux` if `modules: [path.resolve('node_modules'), 'node_modules']` doesn't work
+
+> #### UNINSTALLING ANY MODULES WILL DESTROY YOUR LINK
+- after you uninstall any modules, it will destroy your link (removing most of its content) Make to to `re-link` after an `npm uninstall` of any kind
   
 #### Resource links
 * https://stackoverflow.com/questions/44515865/package-that-is-linked-with-npm-link-doesnt-update
